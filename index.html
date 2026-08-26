@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Calculateur FoE - Securisation & Snipe</title>
+  <title>Calculateur FoE - Sécurisation & Snipe</title>
   <style>
     * {
       box-sizing: border-box;
@@ -19,12 +19,11 @@
     }
     .container {
       width: 100%;
-      max-width: 650px;
+      max-width: 700px;
       display: flex;
       flex-direction: column;
       gap: 20px;
     }
-    /* En-tête principal */
     .app-header {
       text-align: center;
       margin-bottom: 5px;
@@ -45,7 +44,6 @@
       font-size: 0.95rem;
     }
 
-    /* Style des Onglets */
     .tabs {
       display: flex;
       gap: 8px;
@@ -99,7 +97,7 @@
       color: #a0a0aa;
       font-size: 0.9rem;
     }
-    .btn-reset {
+    .btn-reset, .btn-copy {
       background-color: #d93838;
       color: white;
       border: none;
@@ -113,14 +111,21 @@
     .btn-reset:hover {
       background-color: #b52b2b;
     }
+    .btn-copy {
+      background-color: #4DA6FF;
+      margin-bottom: 0;
+      margin-top: 15px;
+      width: 100%;
+    }
+    .btn-copy:hover {
+      background-color: #388ee6;
+    }
+
     .form-group {
       display: flex;
       justify-content: space-between;
       align-items: center;
       margin-bottom: 16px;
-    }
-    .form-group.has-subnote {
-      margin-bottom: 6px;
     }
     .form-group label {
       font-weight: 600;
@@ -128,17 +133,11 @@
       flex: 1;
       padding-right: 12px;
     }
-    .input-subnote {
-      color: #a0a0aa;
-      font-size: 0.8rem;
-      margin-top: 8px;
-      margin-bottom: 20px;
-      line-height: 1.4;
-    }
     .input-counter {
       display: flex;
       align-items: center;
-      width: 240px;
+      width: 200px;
+      height: 38px;
       background-color: #1a1a1e;
       border: 1px solid #3e3e46;
       border-radius: 6px;
@@ -148,10 +147,13 @@
       background-color: #383840;
       color: white;
       border: none;
-      width: 40px;
-      height: 38px;
+      width: 38px;
+      height: 100%;
       font-size: 1.2rem;
       cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
     .input-counter button:hover {
       background-color: #4a4a54;
@@ -162,13 +164,46 @@
       color: white;
       text-align: center;
       width: 100%;
-      font-size: 1rem;
+      height: 100%;
+      font-size: 0.95rem;
       font-weight: bold;
       outline: none;
+    }
+    .input-counter input.select-input {
+      padding: 0 10px;
+      text-align: left;
     }
     input[type=number]::-webkit-inner-spin-button,
     input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
     input[type=number] { -moz-appearance: textfield; }
+
+    .places-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+      margin-bottom: 15px;
+    }
+    .places-table th, .places-table td {
+      padding: 10px;
+      text-align: center;
+      border-bottom: 1px solid #3e3e46;
+    }
+    .places-table th {
+      background-color: #1a1a1e;
+      color: #a0a0aa;
+      font-size: 0.85rem;
+    }
+    .places-table td input {
+      width: 70px;
+      height: 32px;
+      background-color: #1a1a1e;
+      border: 1px solid #3e3e46;
+      color: white;
+      text-align: center;
+      padding: 6px;
+      border-radius: 4px;
+      font-weight: bold;
+    }
 
     .result-card h3 {
       margin-top: 0;
@@ -185,7 +220,6 @@
       font-weight: bold;
     }
 
-    /* Bloc en surbrillance pour les PFs à bloquer (Bleu) */
     .result-row.primary-highlight {
       background: rgba(77, 166, 255, 0.1);
       border-left: 4px solid #4DA6FF;
@@ -204,52 +238,36 @@
       color: #4DA6FF;
     }
 
-    /* Bloc dynamique pour le Bilan PF */
     .result-row.balance-highlight {
       padding: 12px 14px;
       border-radius: 6px;
       margin-top: 8px;
       margin-bottom: 8px;
-      transition: background 0.3s, border-color 0.3s;
     }
     .result-row.balance-highlight span:first-child {
       font-weight: bold;
       color: #ffffff;
-      font-size: 1.05rem;
     }
-    .result-row.balance-highlight .result-value {
-      font-size: 1.35rem;
-    }
-
-    /* Variations dynamique de couleurs pour le Bilan */
     .balance-highlight.balance-zero {
       background: rgba(77, 166, 255, 0.1);
       border-left: 4px solid #4DA6FF;
     }
-    .balance-highlight.balance-zero .result-value {
-      color: #4DA6FF;
-    }
-
+    .balance-highlight.balance-zero .result-value { color: #4DA6FF; }
     .balance-highlight.balance-profit {
       background: rgba(76, 175, 80, 0.12);
       border-left: 4px solid #4CAF50;
     }
-    .balance-highlight.balance-profit .result-value {
-      color: #4CAF50;
-    }
-
+    .balance-highlight.balance-profit .result-value { color: #4CAF50; }
     .balance-highlight.balance-loss {
       background: rgba(244, 67, 54, 0.12);
       border-left: 4px solid #F44336;
     }
-    .balance-highlight.balance-loss .result-value {
-      color: #F44336;
-    }
+    .balance-highlight.balance-loss .result-value { color: #F44336; }
 
     .highlight { color: #4DA6FF; }
     .info-text {
       color: #a0a0aa;
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       margin-top: 12px;
       line-height: 1.4;
     }
@@ -258,16 +276,14 @@
 <body>
 
 <div class="container">
-  <!-- Titre Principal -->
   <header class="app-header">
-    <h1>Forge of Empires <span>— Calculateur Stratégique</span></h1>
+    <h1>Forge of Empires —<span> Calculateur Stratégique</span></h1>
     <p>Sécurisation des Grands Monuments & Optimisation des Snipes</p>
   </header>
 
-  <!-- Barre d'onglets -->
   <div class="tabs">
     <button class="tab-btn active" onclick="switchTab('tab-investor')">Investisseur (Bloquer sa place)</button>
-    <button class="tab-btn" onclick="switchTab('tab-owner')">Propriétaire (Sécuriser P1)</button>
+    <button class="tab-btn" onclick="switchTab('tab-owner')">Propriétaire (Sécuriser P1 à P5)</button>
   </div>
 
   <!-- ONGLET 1: INVESTISSEUR -->
@@ -354,14 +370,53 @@
     </div>
   </div>
 
-  <!-- ONGLET 2: PROPRIÉTAIRE (SÉCURISATION P1) -->
+  <!-- ONGLET 2: PROPRIÉTAIRE (SÉCURISATION P1 À P5) -->
   <div id="tab-owner" class="tab-content">
     <div class="card">
-      <h2>Sécuriser la P1 de son GM</h2>
-      <p class="subtitle">Calcule le montant de PFs à poser pour ouvrir la P1 à un investisseur (taux 1.9 par défaut).</p>
+      <h2>Sécuriser les places P1 à P5</h2>
+      <p class="subtitle">Renseigne le nom du GM, le coût du niveau et les gains de base des places.</p>
       
       <button class="btn-reset" onclick="resetOwnerForm()">Réinitialiser les valeurs</button>
 
+      <!-- 1. Grand Monument (en premier) -->
+      <div class="form-group">
+        <label for="gmName">Grand Monument</label>
+        <div class="input-counter">
+          <input list="gm-list" id="gmName" class="select-input" placeholder="Choisissez un GM...">
+          <datalist id="gm-list">
+            <option value="Aix-la-Chapelle">
+            <option value="Alcatraz">
+            <option value="Alexandrie (Phare d')">
+            <option value="Arche (L')">
+            <option value="Atomium">
+            <option value="Babel (Tour de)">
+            <option value="Cap Canaveral">
+            <option value="Castel del Monte">
+            <option value="Cathédrale de Chartres">
+            <option value="Château de Deal">
+            <option value="Château de Frontenac">
+            <option value="Colisée">
+            <option value="Dresde (Frauenkirche de)">
+            <option value="Espace Spatial Virtuel">
+            <option value="Hagia Sophia">
+            <option value="Himeji (Château d')">
+            <option value="Innovation Tower">
+            <option value="Notre-Dame">
+            <option value="Observatoire">
+            <option value="Orangerie Terrestre">
+            <option value="Reliques (Temple des)">
+            <option value="Royal Albert Hall">
+            <option value="Sainte-Sophie">
+            <option value="Saint-Marc (Basilique)">
+            <option value="Statue de la Liberté">
+            <option value="Statue de Zeus">
+            <option value="Terracotta (Armée de)">
+            <option value="Tour de Galata">
+          </datalist>
+        </div>
+      </div>
+
+      <!-- 2. Coût total du niveau (en deuxième) -->
       <div class="form-group">
         <label for="ownerCost">Coût total du niveau</label>
         <div class="input-counter">
@@ -371,35 +426,73 @@
         </div>
       </div>
 
+      <!-- 3. Taux du fil -->
       <div class="form-group">
-        <label for="p1Reward">Récompense brute P1 (PF)</label>
-        <div class="input-counter">
-          <button onclick="changeVal('p1Reward', -1)">-</button>
-          <input type="number" id="p1Reward" value="0" min="0" oninput="calculateOwner()">
-          <button onclick="changeVal('p1Reward', 1)">+</button>
-        </div>
-      </div>
-
-      <div class="form-group has-subnote">
-        <label for="rate">Taux du fil de l'arche (ex. 1.9)</label>
+        <label for="rate">Taux du fil (ex. 1.9)</label>
         <div class="input-counter">
           <button onclick="changeVal('rate', -0.01, true)">-</button>
           <input type="number" id="rate" value="1.9" step="0.01" min="1" oninput="calculateOwner()">
           <button onclick="changeVal('rate', 0.01, true)">+</button>
         </div>
       </div>
-      <div class="input-subnote">
-        Si tu laisses à 1.9 et que tes investisseurs ont une Arche supérieure (ex. Arche 100+ / 96%), ils feront un bénéfice sur leur dépôt, ce qui est très positif pour les inciter à poser chez toi.
-      </div>
+
+      <table class="places-table">
+        <thead>
+          <tr>
+            <th>Place</th>
+            <th>Gain de base (PF)</th>
+            <th>Mise Investisseur</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>P1</strong></td>
+            <td><input type="number" id="p1Base" value="0" min="0" oninput="calculateOwner()"></td>
+            <td><span id="p1Boost" class="highlight">0</span> PF</td>
+          </tr>
+          <tr>
+            <td><strong>P2</strong></td>
+            <td><input type="number" id="p2Base" value="0" min="0" oninput="calculateOwner()"></td>
+            <td><span id="p2Boost" class="highlight">0</span> PF</td>
+          </tr>
+          <tr>
+            <td><strong>P3</strong></td>
+            <td><input type="number" id="p3Base" value="0" min="0" oninput="calculateOwner()"></td>
+            <td><span id="p3Boost" class="highlight">0</span> PF</td>
+          </tr>
+          <tr>
+            <td><strong>P4</strong></td>
+            <td><input type="number" id="p4Base" value="0" min="0" oninput="calculateOwner()"></td>
+            <td><span id="p4Boost" class="highlight">0</span> PF</td>
+          </tr>
+          <tr>
+            <td><strong>P5</strong></td>
+            <td><input type="number" id="p5Base" value="0" min="0" oninput="calculateOwner()"></td>
+            <td><span id="p5Boost" class="highlight">0</span> PF</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
 
     <div class="card result-card">
-      <h3>Résultat Propriétaire</h3>
-      <div class="result-row">
-        <span>PFs à investir par le propriétaire :</span>
-        <span class="result-value highlight" id="resOwnerSecure">0 PF</span>
+      <h3>Résultat Sécurisation</h3>
+      <div class="result-row primary-highlight">
+        <span>Montant total à poser par le propriétaire :</span>
+        <span class="result-value" id="resOwnerSecure">0 PF</span>
       </div>
-      <p class="info-text">Pour sécuriser la P1 de ton GM sans risque de snipe, tu dois poser ce nombre de PFs avant de publier ta place sur un fil 1.9.</p>
+      <div class="result-row">
+        <span>Total investi par les 5 places :</span>
+        <span class="result-value" id="resTotalInvestors">0 PF</span>
+      </div>
+      
+      <button class="btn-copy" onclick="copyGuildThread()">Copier l'annonce pour la guilde</button>
+      
+      <p class="info-text">
+        Pose ce montant sur ton GM avant d'annoncer les places pour éviter tout risque de snipe sur la P1 et P2.
+      </p>
+      <p class="info-text">
+        💡 <strong>Astuce :</strong> Si tu laisses le taux à 1.9, les contributeurs possédant une Arche de niveau supérieur à 80 réaliseront du bénéfice net sur leur pose, ce qui rendra ton annonce beaucoup plus attractive sur les fils de guilde !
+      </p>
     </div>
   </div>
 </div>
@@ -458,8 +551,11 @@
 
   function resetOwnerForm() {
     document.getElementById('ownerCost').value = 0;
-    document.getElementById('p1Reward').value = 0;
+    document.getElementById('gmName').value = '';
     document.getElementById('rate').value = 1.9;
+    for (let i = 1; i <= 5; i++) {
+      document.getElementById(`p${i}Base`).value = 0;
+    }
     calculateOwner();
   }
 
@@ -472,13 +568,11 @@
     const baseReward = parseFloat(document.getElementById('baseReward').value) || 0;
 
     const remaining = Math.max(0, cost - currentDeposits);
-
     let toSecure = Math.ceil((cost - currentDeposits + myDeposits + targetPlayer) / 2) - myDeposits;
     
     if (targetPlayer > 0 && (myDeposits + toSecure) <= targetPlayer) {
       toSecure = targetPlayer + 1 - myDeposits;
     }
-    
     if (toSecure < 0) toSecure = 0;
 
     const rewardWithArche = Math.round(baseReward * (1 + archeBonus / 100));
@@ -492,7 +586,6 @@
     const balanceEl = document.getElementById('resBalance');
     const balanceRow = document.getElementById('balanceRow');
     
-    // Réinitialisation des classes du bloc
     balanceRow.className = "result-row balance-highlight";
 
     if (balance > 0) {
@@ -509,15 +602,50 @@
 
   function calculateOwner() {
     const ownerCost = parseFloat(document.getElementById('ownerCost').value) || 0;
-    const p1Reward = parseFloat(document.getElementById('p1Reward').value) || 0;
     const rate = parseFloat(document.getElementById('rate').value) || 1.9;
 
-    const rent = Math.round(p1Reward * rate);
+    let totalInvestors = 0;
+    let p1Boost = 0;
+    let p2Boost = 0;
 
-    let ownerSecure = ownerCost - (rent * 2);
+    for (let i = 1; i <= 5; i++) {
+      const base = parseFloat(document.getElementById(`p${i}Base`).value) || 0;
+      const boost = Math.round(base * rate);
+      document.getElementById(`p${i}Boost`).textContent = boost;
+      totalInvestors += boost;
+
+      if (i === 1) p1Boost = boost;
+      if (i === 2) p2Boost = boost;
+    }
+
+    let ownerSecure = ownerCost - (p1Boost + (p2Boost * 2));
     if (ownerSecure < 0) ownerSecure = 0;
 
     document.getElementById('resOwnerSecure').textContent = `${ownerSecure} PF`;
+    document.getElementById('resTotalInvestors').textContent = `${totalInvestors} PF`;
+  }
+
+  function copyGuildThread() {
+    const gmName = document.getElementById('gmName').value.trim();
+    let text = gmName ? `${gmName} ` : '';
+    let parts = [];
+
+    for (let i = 1; i <= 5; i++) {
+      const boost = document.getElementById(`p${i}Boost`).textContent;
+      if (parseInt(boost) > 0) {
+        parts.push(`P${i}(${boost})`);
+      }
+    }
+
+    if (parts.length === 0) {
+      alert("Indique au moins une récompense de place avant de copier !");
+      return;
+    }
+
+    text += parts.join(' ');
+    navigator.clipboard.writeText(text).then(() => {
+      alert(`Texte copié dans le presse-papier :\n"${text}"`);
+    });
   }
 </script>
 
