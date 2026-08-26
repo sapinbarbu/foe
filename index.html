@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculateur FoE - Securisation & Snipe</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+    body {
+      background-color: #1a1a1e;
+      color: #e1e1e6;
+      display: flex;
+      justify-content: center;
+      padding: 20px;
+      margin: 0;
+    }
+    .container {
+      width: 100%;
+      max-width: 650px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    /* Style des Onglets */
+    .tabs {
+      display: flex;
+      gap: 8px;
+      background-color: #26262a;
+      padding: 6px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+    .tab-btn {
+      flex: 1;
+      padding: 12px;
+      border: none;
+      background: transparent;
+      color: #a0a0aa;
+      font-weight: bold;
+      font-size: 0.95rem;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+    }
+    .tab-btn.active {
+      background-color: #4a4a54; /* Couleur plus claire pour l'onglet actif */
+      color: #ffffff;
+    }
+    .tab-btn:hover:not(.active) {
+      color: #e1e1e6;
+      background-color: rgba(255, 255, 255, 0.05);
+    }
+    
+    .tab-content {
+      display: none;
+    }
+    .tab-content.active {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .card {
+      background-color: #26262a;
+      border-radius: 8px;
+      padding: 24px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+    h1 {
+      margin: 0 0 8px 0;
+      font-size: 1.6rem;
+    }
+    p.subtitle {
+      margin: 0 0 20px 0;
+      color: #a0a0aa;
+      font-size: 0.9rem;
+    }
+    .btn-reset {
+      background-color: #d93838;
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-bottom: 24px;
+      transition: background 0.2s;
+    }
+    .btn-reset:hover {
+      background-color: #b52b2b;
+    }
+    .form-group {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+    .form-group.has-subnote {
+      margin-bottom: 6px; /* Espace réduit sous les champs suivis d'une note */
+    }
+    .form-group label {
+      font-weight: 600;
+      font-size: 0.95rem;
+      flex: 1;
+      padding-right: 12px;
+    }
+    .input-subnote {
+      color: #a0a0aa;
+      font-size: 0.8rem;
+      margin-top: 8px; /* Espacement supérieur aéré au-dessus du sous-texte */
+      margin-bottom: 20px;
+      line-height: 1.4;
+    }
+    .input-counter {
+      display: flex;
+      align-items: center;
+      width: 240px;
+      background-color: #1a1a1e;
+      border: 1px solid #3e3e46;
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    .input-counter button {
+      background-color: #383840;
+      color: white;
+      border: none;
+      width: 40px;
+      height: 38px;
+      font-size: 1.2rem;
+      cursor: pointer;
+    }
+    .input-counter button:hover {
+      background-color: #4a4a54;
+    }
+    .input-counter input {
+      background: transparent;
+      border: none;
+      color: white;
+      text-align: center;
+      width: 100%;
+      font-size: 1rem;
+      font-weight: bold;
+      outline: none;
+    }
+    /* Masquer les flèches sur Chrome/Safari/Firefox */
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+    input[type=number] { -moz-appearance: textfield; }
+
+    .result-card h2 {
+      margin-top: 0;
+      font-size: 1.4rem;
+    }
+    .result-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      font-size: 1.05rem;
+    }
+    .result-value {
+      font-weight: bold;
+    }
+    .profit { color: #4CAF50; }
+    .loss { color: #F44336; }
+    .highlight { color: #4DA6FF; }
+    .info-text {
+      color: #a0a0aa;
+      font-size: 0.9rem;
+      margin-top: 12px;
+      line-height: 1.4;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <!-- Barre d'onglets -->
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('tab-investor')">Investisseur (Bloquer sa place)</button>
+    <button class="tab-btn" onclick="switchTab('tab-owner')">Propriétaire (Sécuriser P1)</button>
+  </div>
+
+  <!-- ONGLET 1: INVESTISSEUR -->
+  <div id="tab-investor" class="tab-content active">
+    <div class="card">
+      <h1>Bloquer sa place</h1>
+      <p class="subtitle">Saisis les différentes valeurs. Le résultat se met à jour automatiquement.</p>
+      
+      <button class="btn-reset" onclick="resetInvestorForm()">Réinitialiser les valeurs</button>
+
+      <div class="form-group">
+        <label for="cost">Coût du niveau</label>
+        <div class="input-counter">
+          <button onclick="changeVal('cost', -1)">-</button>
+          <input type="number" id="cost" value="0" min="0" oninput="calculateInvestor()">
+          <button onclick="changeVal('cost', 1)">+</button>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="currentDeposits">Somme des dépôts actuels</label>
+        <div class="input-counter">
+          <button onclick="changeVal('currentDeposits', -1)">-</button>
+          <input type="number" id="currentDeposits" value="0" min="0" oninput="calculateInvestor()">
+          <button onclick="changeVal('currentDeposits', 1)">+</button>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="myDeposits">Ta participation actuelle</label>
+        <div class="input-counter">
+          <button onclick="changeVal('myDeposits', -1)">-</button>
+          <input type="number" id="myDeposits" value="0" min="0" oninput="calculateInvestor()">
+          <button onclick="changeVal('myDeposits', 1)">+</button>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="targetPlayer">Participation du joueur à dépasser</label>
+        <div class="input-counter">
+          <button onclick="changeVal('targetPlayer', -1)">-</button>
+          <input type="number" id="targetPlayer" value="0" min="0" oninput="calculateInvestor()">
+          <button onclick="changeVal('targetPlayer', 1)">+</button>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="archeBonus">Bonus de ton Arche (%)</label>
+        <div class="input-counter">
+          <button onclick="changeVal('archeBonus', -0.1, true)">-</button>
+          <input type="number" id="archeBonus" value="90" step="0.1" min="0" oninput="saveArche(); calculateInvestor()">
+          <button onclick="changeVal('archeBonus', 0.1, true)">+</button>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="baseReward">Récompense (PF) de la place visée</label>
+        <div class="input-counter">
+          <button onclick="changeVal('baseReward', -1)">-</button>
+          <input type="number" id="baseReward" value="0" min="0" oninput="calculateInvestor()">
+          <button onclick="changeVal('baseReward', 1)">+</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card result-card">
+      <h2>Résultat</h2>
+      <div class="result-row">
+        <span>Nombre de PFs restant pour compléter le niveau :</span>
+        <span class="result-value" id="resRemaining">0</span>
+      </div>
+      <div class="result-row">
+        <span>PFs que tu dois mettre pour bloquer la place :</span>
+        <span class="result-value" id="resToSecure">0</span>
+      </div>
+      <div class="result-row">
+        <span>Récompense reçue (avec ton Arche) :</span>
+        <span class="result-value" id="resReward">0</span>
+      </div>
+      <div class="result-row">
+        <span>Bilan PF :</span>
+        <span class="result-value" id="resBalance">0</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ONGLET 2: PROPRIÉTAIRE (SÉCURISATION P1) -->
+  <div id="tab-owner" class="tab-content">
+    <div class="card">
+      <h1>Sécuriser la P1 de son GM</h1>
+      <p class="subtitle">Calcule le montant de PFs à poser pour ouvrir la P1 à un investisseur (taux 1.9 par défaut).</p>
+      
+      <button class="btn-reset" onclick="resetOwnerForm()">Réinitialiser les valeurs</button>
+
+      <div class="form-group">
+        <label for="ownerCost">Coût total du niveau</label>
+        <div class="input-counter">
+          <button onclick="changeVal('ownerCost', -1)">-</button>
+          <input type="number" id="ownerCost" value="0" min="0" oninput="calculateOwner()">
+          <button onclick="changeVal('ownerCost', 1)">+</button>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="p1Reward">Récompense brute P1 (PF)</label>
+        <div class="input-counter">
+          <button onclick="changeVal('p1Reward', -1)">-</button>
+          <input type="number" id="p1Reward" value="0" min="0" oninput="calculateOwner()">
+          <button onclick="changeVal('p1Reward', 1)">+</button>
+        </div>
+      </div>
+
+      <div class="form-group has-subnote">
+        <label for="rate">Taux du fil de l'arche (ex. 1.9)</label>
+        <div class="input-counter">
+          <button onclick="changeVal('rate', -0.01, true)">-</button>
+          <input type="number" id="rate" value="1.9" step="0.01" min="1" oninput="calculateOwner()">
+          <button onclick="changeVal('rate', 0.01, true)">+</button>
+        </div>
+      </div>
+      <div class="input-subnote">
+        Si tu laisses à 1.9 et que tes investisseurs ont une Arche supérieure (ex. Arche 100+ / 96%), ils feront un bénéfice sur leur dépôt, ce qui est très positif pour les inciter à poser chez toi.
+      </div>
+    </div>
+
+    <div class="card result-card">
+      <h2>Résultat Propriétaire</h2>
+      <div class="result-row">
+        <span>PFs à investir par le propriétaire :</span>
+        <span class="result-value highlight" id="resOwnerSecure">0 PF</span>
+      </div>
+      <p class="info-text">Pour sécuriser la P1 de ton GM sans risque de snipe, tu dois poser ce nombre de PFs avant de publier ta place sur un fil 1.9.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+  function switchTab(tabId) {
+    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+    
+    if (tabId === 'tab-investor') {
+      document.querySelectorAll('.tab-btn')[0].classList.add('active');
+    } else {
+      document.querySelectorAll('.tab-btn')[1].classList.add('active');
+    }
+    document.getElementById(tabId).classList.add('active');
+  }
+
+  window.onload = function() {
+    const savedBonus = localStorage.getItem('foe_arche_bonus');
+    if (savedBonus !== null) {
+      document.getElementById('archeBonus').value = savedBonus;
+    }
+    calculateInvestor();
+    calculateOwner();
+  };
+
+  function saveArche() {
+    const bonus = document.getElementById('archeBonus').value;
+    localStorage.setItem('foe_arche_bonus', bonus);
+  }
+
+  function changeVal(id, step, isFloat = false) {
+    const input = document.getElementById(id);
+    let val = isFloat ? parseFloat(input.value) || 0 : parseInt(input.value) || 0;
+    val += step;
+    if (val < 0) val = 0;
+    input.value = isFloat ? (id === 'rate' ? val.toFixed(2) : val.toFixed(1)) : val;
+    
+    if (id === 'archeBonus') saveArche();
+    
+    if (['cost', 'currentDeposits', 'myDeposits', 'targetPlayer', 'archeBonus', 'baseReward'].includes(id)) {
+      calculateInvestor();
+    } else {
+      calculateOwner();
+    }
+  }
+
+  function resetInvestorForm() {
+    document.getElementById('cost').value = 0;
+    document.getElementById('currentDeposits').value = 0;
+    document.getElementById('myDeposits').value = 0;
+    document.getElementById('targetPlayer').value = 0;
+    document.getElementById('baseReward').value = 0;
+    calculateInvestor();
+  }
+
+  function resetOwnerForm() {
+    document.getElementById('ownerCost').value = 0;
+    document.getElementById('p1Reward').value = 0;
+    document.getElementById('rate').value = 1.9;
+    calculateOwner();
+  }
+
+  function calculateInvestor() {
+    const cost = parseFloat(document.getElementById('cost').value) || 0;
+    const currentDeposits = parseFloat(document.getElementById('currentDeposits').value) || 0;
+    const myDeposits = parseFloat(document.getElementById('myDeposits').value) || 0;
+    const targetPlayer = parseFloat(document.getElementById('targetPlayer').value) || 0;
+    const archeBonus = parseFloat(document.getElementById('archeBonus').value) || 0;
+    const baseReward = parseFloat(document.getElementById('baseReward').value) || 0;
+
+    const remaining = Math.max(0, cost - currentDeposits);
+
+    let toSecure = Math.ceil((cost - currentDeposits + myDeposits + targetPlayer) / 2) - myDeposits;
+    
+    if (targetPlayer > 0 && (myDeposits + toSecure) <= targetPlayer) {
+      toSecure = targetPlayer + 1 - myDeposits;
+    }
+    
+    if (toSecure < 0) toSecure = 0;
+
+    const rewardWithArche = Math.round(baseReward * (1 + archeBonus / 100));
+    const totalInvested = myDeposits + toSecure;
+    const balance = rewardWithArche - totalInvested;
+
+    document.getElementById('resRemaining').textContent = remaining;
+    document.getElementById('resToSecure').textContent = toSecure;
+    document.getElementById('resReward').textContent = rewardWithArche;
+
+    const balanceEl = document.getElementById('resBalance');
+    if (balance > 0) {
+      balanceEl.textContent = `Gain : +${balance} PF`;
+      balanceEl.className = "result-value profit";
+    } else if (balance < 0) {
+      balanceEl.textContent = `Perte : ${balance} PF`;
+      balanceEl.className = "result-value loss";
+    } else {
+      balanceEl.textContent = `0 PF`;
+      balanceEl.className = "result-value";
+    }
+  }
+
+  function calculateOwner() {
+    const ownerCost = parseFloat(document.getElementById('ownerCost').value) || 0;
+    const p1Reward = parseFloat(document.getElementById('p1Reward').value) || 0;
+    const rate = parseFloat(document.getElementById('rate').value) || 1.9;
+
+    const rent = Math.round(p1Reward * rate);
+
+    let ownerSecure = ownerCost - (rent * 2);
+    if (ownerSecure < 0) ownerSecure = 0;
+
+    document.getElementById('resOwnerSecure').textContent = `${ownerSecure} PF`;
+  }
+</script>
+
+</body>
+</html>
