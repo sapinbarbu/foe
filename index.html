@@ -24,6 +24,27 @@
       flex-direction: column;
       gap: 20px;
     }
+    /* En-tête principal */
+    .app-header {
+      text-align: center;
+      margin-bottom: 5px;
+    }
+    .app-header h1 {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: #ffffff;
+      margin: 0 0 6px 0;
+      letter-spacing: -0.5px;
+    }
+    .app-header h1 span {
+      color: #4DA6FF;
+    }
+    .app-header p {
+      margin: 0;
+      color: #a0a0aa;
+      font-size: 0.95rem;
+    }
+
     /* Style des Onglets */
     .tabs {
       display: flex;
@@ -69,9 +90,9 @@
       padding: 24px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.3);
     }
-    h1 {
+    .card h2 {
       margin: 0 0 8px 0;
-      font-size: 1.6rem;
+      font-size: 1.5rem;
     }
     p.subtitle {
       margin: 0 0 20px 0;
@@ -149,9 +170,9 @@
     input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
     input[type=number] { -moz-appearance: textfield; }
 
-    .result-card h2 {
+    .result-card h3 {
       margin-top: 0;
-      font-size: 1.4rem;
+      font-size: 1.3rem;
     }
     .result-row {
       display: flex;
@@ -237,6 +258,12 @@
 <body>
 
 <div class="container">
+  <!-- Titre Principal -->
+  <header class="app-header">
+    <h1>Forge of Empires <span>— Calculateur Stratégique</span></h1>
+    <p>Sécurisation des Grands Monuments & Optimisation des Snipes</p>
+  </header>
+
   <!-- Barre d'onglets -->
   <div class="tabs">
     <button class="tab-btn active" onclick="switchTab('tab-investor')">Investisseur (Bloquer sa place)</button>
@@ -246,7 +273,7 @@
   <!-- ONGLET 1: INVESTISSEUR -->
   <div id="tab-investor" class="tab-content active">
     <div class="card">
-      <h1>Bloquer sa place</h1>
+      <h2>Bloquer sa place</h2>
       <p class="subtitle">Saisis les différentes valeurs. Le résultat se met à jour automatiquement.</p>
       
       <button class="btn-reset" onclick="resetInvestorForm()">Réinitialiser les valeurs</button>
@@ -307,7 +334,7 @@
     </div>
 
     <div class="card result-card">
-      <h2>Résultat</h2>
+      <h3>Résultat</h3>
       <div class="result-row">
         <span>Nombre de PFs restant pour compléter le niveau :</span>
         <span class="result-value" id="resRemaining">0</span>
@@ -330,7 +357,7 @@
   <!-- ONGLET 2: PROPRIÉTAIRE (SÉCURISATION P1) -->
   <div id="tab-owner" class="tab-content">
     <div class="card">
-      <h1>Sécuriser la P1 de son GM</h1>
+      <h2>Sécuriser la P1 de son GM</h2>
       <p class="subtitle">Calcule le montant de PFs à poser pour ouvrir la P1 à un investisseur (taux 1.9 par défaut).</p>
       
       <button class="btn-reset" onclick="resetOwnerForm()">Réinitialiser les valeurs</button>
@@ -367,7 +394,7 @@
     </div>
 
     <div class="card result-card">
-      <h2>Résultat Propriétaire</h2>
+      <h3>Résultat Propriétaire</h3>
       <div class="result-row">
         <span>PFs à investir par le propriétaire :</span>
         <span class="result-value highlight" id="resOwnerSecure">0 PF</span>
