@@ -46,7 +46,7 @@
       transition: background 0.2s, color 0.2s;
     }
     .tab-btn.active {
-      background-color: #4a4a54; /* Couleur plus claire pour l'onglet actif */
+      background-color: #4a4a54;
       color: #ffffff;
     }
     .tab-btn:hover:not(.active) {
@@ -99,7 +99,7 @@
       margin-bottom: 16px;
     }
     .form-group.has-subnote {
-      margin-bottom: 6px; /* Espace réduit sous les champs suivis d'une note */
+      margin-bottom: 6px;
     }
     .form-group label {
       font-weight: 600;
@@ -110,7 +110,7 @@
     .input-subnote {
       color: #a0a0aa;
       font-size: 0.8rem;
-      margin-top: 8px; /* Espacement supérieur aéré au-dessus du sous-texte */
+      margin-top: 8px;
       margin-bottom: 20px;
       line-height: 1.4;
     }
@@ -145,7 +145,6 @@
       font-weight: bold;
       outline: none;
     }
-    /* Masquer les flèches sur Chrome/Safari/Firefox */
     input[type=number]::-webkit-inner-spin-button,
     input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
     input[type=number] { -moz-appearance: textfield; }
@@ -157,14 +156,75 @@
     .result-row {
       display: flex;
       justify-content: space-between;
+      align-items: center;
       margin-bottom: 12px;
       font-size: 1.05rem;
     }
     .result-value {
       font-weight: bold;
     }
-    .profit { color: #4CAF50; }
-    .loss { color: #F44336; }
+
+    /* Bloc en surbrillance pour les PFs à bloquer (Bleu) */
+    .result-row.primary-highlight {
+      background: rgba(77, 166, 255, 0.1);
+      border-left: 4px solid #4DA6FF;
+      padding: 12px 14px;
+      border-radius: 6px;
+      margin-top: 8px;
+      margin-bottom: 16px;
+    }
+    .result-row.primary-highlight span:first-child {
+      font-weight: bold;
+      color: #ffffff;
+      font-size: 1.05rem;
+    }
+    .result-row.primary-highlight .result-value {
+      font-size: 1.35rem;
+      color: #4DA6FF;
+    }
+
+    /* Bloc dynamique pour le Bilan PF */
+    .result-row.balance-highlight {
+      padding: 12px 14px;
+      border-radius: 6px;
+      margin-top: 8px;
+      margin-bottom: 8px;
+      transition: background 0.3s, border-color 0.3s;
+    }
+    .result-row.balance-highlight span:first-child {
+      font-weight: bold;
+      color: #ffffff;
+      font-size: 1.05rem;
+    }
+    .result-row.balance-highlight .result-value {
+      font-size: 1.35rem;
+    }
+
+    /* Variations dynamique de couleurs pour le Bilan */
+    .balance-highlight.balance-zero {
+      background: rgba(77, 166, 255, 0.1);
+      border-left: 4px solid #4DA6FF;
+    }
+    .balance-highlight.balance-zero .result-value {
+      color: #4DA6FF;
+    }
+
+    .balance-highlight.balance-profit {
+      background: rgba(76, 175, 80, 0.12);
+      border-left: 4px solid #4CAF50;
+    }
+    .balance-highlight.balance-profit .result-value {
+      color: #4CAF50;
+    }
+
+    .balance-highlight.balance-loss {
+      background: rgba(244, 67, 54, 0.12);
+      border-left: 4px solid #F44336;
+    }
+    .balance-highlight.balance-loss .result-value {
+      color: #F44336;
+    }
+
     .highlight { color: #4DA6FF; }
     .info-text {
       color: #a0a0aa;
@@ -252,7 +312,7 @@
         <span>Nombre de PFs restant pour compléter le niveau :</span>
         <span class="result-value" id="resRemaining">0</span>
       </div>
-      <div class="result-row">
+      <div class="result-row primary-highlight">
         <span>PFs que tu dois mettre pour bloquer la place :</span>
         <span class="result-value" id="resToSecure">0</span>
       </div>
@@ -260,9 +320,9 @@
         <span>Récompense reçue (avec ton Arche) :</span>
         <span class="result-value" id="resReward">0</span>
       </div>
-      <div class="result-row">
+      <div class="result-row balance-highlight balance-zero" id="balanceRow">
         <span>Bilan PF :</span>
-        <span class="result-value" id="resBalance">0</span>
+        <span class="result-value" id="resBalance">0 PF</span>
       </div>
     </div>
   </div>
@@ -403,15 +463,20 @@
     document.getElementById('resReward').textContent = rewardWithArche;
 
     const balanceEl = document.getElementById('resBalance');
+    const balanceRow = document.getElementById('balanceRow');
+    
+    // Réinitialisation des classes du bloc
+    balanceRow.className = "result-row balance-highlight";
+
     if (balance > 0) {
       balanceEl.textContent = `Gain : +${balance} PF`;
-      balanceEl.className = "result-value profit";
+      balanceRow.classList.add("balance-profit");
     } else if (balance < 0) {
       balanceEl.textContent = `Perte : ${balance} PF`;
-      balanceEl.className = "result-value loss";
+      balanceRow.classList.add("balance-loss");
     } else {
       balanceEl.textContent = `0 PF`;
-      balanceEl.className = "result-value";
+      balanceRow.classList.add("balance-zero");
     }
   }
 
