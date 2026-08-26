@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Calculateur FoE - Sécurisation & Snipe</title>
+  <title>Forge of Empires — Calculateur</title>
   <style>
     * {
       box-sizing: border-box;
@@ -12,65 +12,59 @@
     body {
       background-color: #1a1a1e;
       color: #e1e1e6;
+      margin: 0;
+      padding: 20px;
       display: flex;
       justify-content: center;
-      padding: 20px;
-      margin: 0;
+      align-items: flex-start;
+      min-height: 100vh;
     }
     .container {
-      width: 100%;
-      max-width: 700px;
       display: flex;
       flex-direction: column;
-      gap: 20px;
+      gap: 15px;
+      width: 100%;
+      max-width: 440px;
     }
     .app-header {
       text-align: center;
-      margin-bottom: 5px;
     }
     .app-header h1 {
-      font-size: 1.8rem;
+      font-size: 1.4rem;
       font-weight: 800;
       color: #ffffff;
-      margin: 0 0 6px 0;
-      letter-spacing: -0.5px;
+      margin: 0 0 4px 0;
     }
     .app-header h1 span {
       color: #4DA6FF;
     }
     .app-header p {
-      margin: 0;
+      margin: 0 0 10px 0;
       color: #a0a0aa;
-      font-size: 0.95rem;
+      font-size: 0.85rem;
     }
 
     .tabs {
       display: flex;
-      gap: 8px;
+      gap: 6px;
       background-color: #26262a;
-      padding: 6px;
-      border-radius: 8px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      padding: 4px;
+      border-radius: 6px;
     }
     .tab-btn {
       flex: 1;
-      padding: 12px;
+      padding: 10px;
       border: none;
       background: transparent;
       color: #a0a0aa;
       font-weight: bold;
-      font-size: 0.95rem;
-      border-radius: 6px;
+      font-size: 0.85rem;
+      border-radius: 4px;
       cursor: pointer;
-      transition: background 0.2s, color 0.2s;
     }
     .tab-btn.active {
       background-color: #4a4a54;
       color: #ffffff;
-    }
-    .tab-btn:hover:not(.active) {
-      color: #e1e1e6;
-      background-color: rgba(255, 255, 255, 0.05);
     }
     
     .tab-content {
@@ -79,65 +73,60 @@
     .tab-content.active {
       display: flex;
       flex-direction: column;
-      gap: 20px;
+      gap: 15px;
     }
 
     .card {
       background-color: #26262a;
       border-radius: 8px;
-      padding: 24px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      padding: 16px;
     }
     .card h2 {
-      margin: 0 0 8px 0;
-      font-size: 1.5rem;
+      margin: 0 0 4px 0;
+      font-size: 1.1rem;
     }
     p.subtitle {
-      margin: 0 0 20px 0;
+      margin: 0 0 14px 0;
       color: #a0a0aa;
-      font-size: 0.9rem;
+      font-size: 0.8rem;
     }
-    .btn-reset, .btn-copy {
+    .btn-reset, .btn-copy, .btn-detach {
       background-color: #d93838;
       color: white;
       border: none;
-      padding: 10px 16px;
+      padding: 10px 12px;
       border-radius: 6px;
       font-weight: bold;
       cursor: pointer;
-      margin-bottom: 24px;
-      transition: background 0.2s;
+      margin-bottom: 14px;
+      width: 100%;
+      font-size: 0.85rem;
     }
-    .btn-reset:hover {
-      background-color: #b52b2b;
-    }
-    .btn-copy {
+    .btn-reset:hover { background-color: #b52b2b; }
+    .btn-copy, .btn-detach {
       background-color: #4DA6FF;
       margin-bottom: 0;
-      margin-top: 15px;
-      width: 100%;
+      margin-top: 10px;
     }
-    .btn-copy:hover {
-      background-color: #388ee6;
-    }
+    .btn-copy:hover, .btn-detach:hover { background-color: #388ee6; }
 
     .form-group {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 16px;
+      margin-bottom: 10px;
     }
     .form-group label {
       font-weight: 600;
-      font-size: 0.95rem;
+      font-size: 0.85rem;
       flex: 1;
-      padding-right: 12px;
+      padding-right: 8px;
     }
     .input-counter {
       display: flex;
       align-items: center;
-      width: 200px;
-      height: 38px;
+      width: 160px;
+      height: 36px;
       background-color: #1a1a1e;
       border: 1px solid #3e3e46;
       border-radius: 6px;
@@ -147,17 +136,12 @@
       background-color: #383840;
       color: white;
       border: none;
-      width: 38px;
+      width: 34px;
       height: 100%;
-      font-size: 1.2rem;
+      font-size: 1.1rem;
       cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
     }
-    .input-counter button:hover {
-      background-color: #4a4a54;
-    }
+    .input-counter button:hover { background-color: #4a4a54; }
     .input-counter input {
       background: transparent;
       border: none;
@@ -165,12 +149,12 @@
       text-align: center;
       width: 100%;
       height: 100%;
-      font-size: 0.95rem;
+      font-size: 0.85rem;
       font-weight: bold;
       outline: none;
     }
     .input-counter input.select-input {
-      padding: 0 10px;
+      padding: 0 8px;
       text-align: left;
     }
     input[type=number]::-webkit-inner-spin-button,
@@ -180,96 +164,69 @@
     .places-table {
       width: 100%;
       border-collapse: collapse;
-      margin-top: 15px;
-      margin-bottom: 15px;
+      margin-top: 10px;
+      margin-bottom: 10px;
     }
     .places-table th, .places-table td {
-      padding: 10px;
+      padding: 6px;
       text-align: center;
       border-bottom: 1px solid #3e3e46;
+      font-size: 0.85rem;
     }
     .places-table th {
       background-color: #1a1a1e;
       color: #a0a0aa;
-      font-size: 0.85rem;
     }
     .places-table td input {
-      width: 70px;
-      height: 32px;
+      width: 65px;
+      height: 30px;
       background-color: #1a1a1e;
       border: 1px solid #3e3e46;
       color: white;
       text-align: center;
-      padding: 6px;
       border-radius: 4px;
       font-weight: bold;
     }
 
-    .result-card h3 {
-      margin-top: 0;
-      font-size: 1.3rem;
-    }
+    .result-card h3 { margin: 0 0 10px 0; font-size: 1rem; }
     .result-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 12px;
-      font-size: 1.05rem;
+      margin-bottom: 8px;
+      font-size: 0.9rem;
     }
-    .result-value {
-      font-weight: bold;
-    }
+    .result-value { font-weight: bold; }
 
     .result-row.primary-highlight {
       background: rgba(77, 166, 255, 0.1);
-      border-left: 4px solid #4DA6FF;
-      padding: 12px 14px;
-      border-radius: 6px;
-      margin-top: 8px;
-      margin-bottom: 16px;
+      border-left: 3px solid #4DA6FF;
+      padding: 8px 10px;
+      border-radius: 4px;
+      transition: background-color 0.2s ease;
     }
-    .result-row.primary-highlight span:first-child {
-      font-weight: bold;
-      color: #ffffff;
-      font-size: 1.05rem;
+    .result-row.primary-highlight:hover {
+      background: rgba(77, 166, 255, 0.25);
     }
-    .result-row.primary-highlight .result-value {
-      font-size: 1.35rem;
-      color: #4DA6FF;
-    }
+    .result-row.primary-highlight .result-value { color: #4DA6FF; font-size: 1.1rem; }
 
     .result-row.balance-highlight {
-      padding: 12px 14px;
-      border-radius: 6px;
-      margin-top: 8px;
-      margin-bottom: 8px;
+      padding: 8px 10px;
+      border-radius: 4px;
     }
-    .result-row.balance-highlight span:first-child {
-      font-weight: bold;
-      color: #ffffff;
-    }
-    .balance-highlight.balance-zero {
-      background: rgba(77, 166, 255, 0.1);
-      border-left: 4px solid #4DA6FF;
-    }
+    .balance-highlight.balance-zero { background: rgba(77, 166, 255, 0.1); border-left: 3px solid #4DA6FF; }
     .balance-highlight.balance-zero .result-value { color: #4DA6FF; }
-    .balance-highlight.balance-profit {
-      background: rgba(76, 175, 80, 0.12);
-      border-left: 4px solid #4CAF50;
-    }
+    .balance-highlight.balance-profit { background: rgba(76, 175, 80, 0.12); border-left: 3px solid #4CAF50; }
     .balance-highlight.balance-profit .result-value { color: #4CAF50; }
-    .balance-highlight.balance-loss {
-      background: rgba(244, 67, 54, 0.12);
-      border-left: 4px solid #F44336;
-    }
+    .balance-highlight.balance-loss { background: rgba(244, 67, 54, 0.12); border-left: 3px solid #F44336; }
     .balance-highlight.balance-loss .result-value { color: #F44336; }
 
     .highlight { color: #4DA6FF; }
     .info-text {
       color: #a0a0aa;
-      font-size: 0.85rem;
-      margin-top: 12px;
-      line-height: 1.4;
+      font-size: 0.75rem;
+      margin-top: 8px;
+      line-height: 1.3;
     }
   </style>
 </head>
@@ -277,74 +234,75 @@
 
 <div class="container">
   <header class="app-header">
-    <h1>Forge of Empires —<span> Calculateur Stratégique</span></h1>
-    <p>Sécurisation des Grands Monuments & Optimisation des Snipes</p>
+    <h1>Forge of Empires <span>— Calculateur</span></h1>
+    <p>Sécurisation des GM & Snipes</p>
+    <button id="btn-open-tab" class="btn-detach">Ouvrir dans un nouvel onglet</button>
   </header>
 
   <div class="tabs">
-    <button class="tab-btn active" onclick="switchTab('tab-investor')">Investisseur (Bloquer sa place)</button>
-    <button class="tab-btn" onclick="switchTab('tab-owner')">Propriétaire (Sécuriser P1 à P5)</button>
+    <button class="tab-btn active" id="btn-tab-investor">Investisseur</button>
+    <button class="tab-btn" id="btn-tab-owner">Propriétaire</button>
   </div>
 
-  <!-- ONGLET 1: INVESTISSEUR -->
+  <!-- TAB 1 : INVESTISSEUR -->
   <div id="tab-investor" class="tab-content active">
     <div class="card">
       <h2>Bloquer sa place</h2>
-      <p class="subtitle">Saisis les différentes valeurs. Le résultat se met à jour automatiquement.</p>
+      <p class="subtitle">Saisis les différentes valeurs.</p>
       
-      <button class="btn-reset" onclick="resetInvestorForm()">Réinitialiser les valeurs</button>
+      <button class="btn-reset" id="reset-investor">Réinitialiser</button>
 
       <div class="form-group">
         <label for="cost">Coût du niveau</label>
         <div class="input-counter">
-          <button onclick="changeVal('cost', -1)">-</button>
-          <input type="number" id="cost" value="0" min="0" oninput="calculateInvestor()">
-          <button onclick="changeVal('cost', 1)">+</button>
+          <button id="btn-cost-minus">-</button>
+          <input type="number" id="cost" value="0" min="0">
+          <button id="btn-cost-plus">+</button>
         </div>
       </div>
 
       <div class="form-group">
         <label for="currentDeposits">Somme des dépôts actuels</label>
         <div class="input-counter">
-          <button onclick="changeVal('currentDeposits', -1)">-</button>
-          <input type="number" id="currentDeposits" value="0" min="0" oninput="calculateInvestor()">
-          <button onclick="changeVal('currentDeposits', 1)">+</button>
+          <button id="btn-currentDeposits-minus">-</button>
+          <input type="number" id="currentDeposits" value="0" min="0">
+          <button id="btn-currentDeposits-plus">+</button>
         </div>
       </div>
 
       <div class="form-group">
         <label for="myDeposits">Ta participation actuelle</label>
         <div class="input-counter">
-          <button onclick="changeVal('myDeposits', -1)">-</button>
-          <input type="number" id="myDeposits" value="0" min="0" oninput="calculateInvestor()">
-          <button onclick="changeVal('myDeposits', 1)">+</button>
+          <button id="btn-myDeposits-minus">-</button>
+          <input type="number" id="myDeposits" value="0" min="0">
+          <button id="btn-myDeposits-plus">+</button>
         </div>
       </div>
 
       <div class="form-group">
-        <label for="targetPlayer">Participation du joueur à dépasser</label>
+        <label for="targetPlayer">Participation à dépasser</label>
         <div class="input-counter">
-          <button onclick="changeVal('targetPlayer', -1)">-</button>
-          <input type="number" id="targetPlayer" value="0" min="0" oninput="calculateInvestor()">
-          <button onclick="changeVal('targetPlayer', 1)">+</button>
+          <button id="btn-targetPlayer-minus">-</button>
+          <input type="number" id="targetPlayer" value="0" min="0">
+          <button id="btn-targetPlayer-plus">+</button>
         </div>
       </div>
 
       <div class="form-group">
-        <label for="archeBonus">Bonus de ton Arche (%)</label>
+        <label for="archeBonus">Bonus Arche (%)</label>
         <div class="input-counter">
-          <button onclick="changeVal('archeBonus', -0.1, true)">-</button>
-          <input type="number" id="archeBonus" value="90" step="0.1" min="0" oninput="saveArche(); calculateInvestor()">
-          <button onclick="changeVal('archeBonus', 0.1, true)">+</button>
+          <button id="btn-archeBonus-minus">-</button>
+          <input type="number" id="archeBonus" value="90" step="0.1" min="0">
+          <button id="btn-archeBonus-plus">+</button>
         </div>
       </div>
 
       <div class="form-group">
-        <label for="baseReward">Récompense (PF) de la place visée</label>
+        <label for="baseReward">Récompense (PF) de la place</label>
         <div class="input-counter">
-          <button onclick="changeVal('baseReward', -1)">-</button>
-          <input type="number" id="baseReward" value="0" min="0" oninput="calculateInvestor()">
-          <button onclick="changeVal('baseReward', 1)">+</button>
+          <button id="btn-baseReward-minus">-</button>
+          <input type="number" id="baseReward" value="0" min="0">
+          <button id="btn-baseReward-plus">+</button>
         </div>
       </div>
     </div>
@@ -352,15 +310,15 @@
     <div class="card result-card">
       <h3>Résultat</h3>
       <div class="result-row">
-        <span>Nombre de PFs restant pour compléter le niveau :</span>
+        <span>PFs restants :</span>
         <span class="result-value" id="resRemaining">0</span>
       </div>
-      <div class="result-row primary-highlight">
-        <span>PFs que tu dois mettre pour bloquer la place :</span>
+      <div class="result-row primary-highlight" id="rowToSecure" style="cursor: pointer;" title="Cliquer pour copier le montant">
+        <span>PFs à poser pour bloquer :</span>
         <span class="result-value" id="resToSecure">0</span>
       </div>
       <div class="result-row">
-        <span>Récompense reçue (avec ton Arche) :</span>
+        <span>Gain reçus (avec Arche) :</span>
         <span class="result-value" id="resReward">0</span>
       </div>
       <div class="result-row balance-highlight balance-zero" id="balanceRow">
@@ -370,19 +328,18 @@
     </div>
   </div>
 
-  <!-- ONGLET 2: PROPRIÉTAIRE (SÉCURISATION P1 À P5) -->
+  <!-- TAB 2 : PROPRIÉTAIRE -->
   <div id="tab-owner" class="tab-content">
     <div class="card">
-      <h2>Sécuriser les places P1 à P5</h2>
-      <p class="subtitle">Renseigne le nom du GM, le coût du niveau et les gains de base des places.</p>
+      <h2>Sécuriser P1 à P5</h2>
+      <p class="subtitle">Nom du GM, coût et gains de base.</p>
       
-      <button class="btn-reset" onclick="resetOwnerForm()">Réinitialiser les valeurs</button>
+      <button class="btn-reset" id="reset-owner">Réinitialiser</button>
 
-      <!-- 1. Grand Monument (en premier) -->
       <div class="form-group">
         <label for="gmName">Grand Monument</label>
         <div class="input-counter">
-          <input list="gm-list" id="gmName" class="select-input" placeholder="Choisissez un GM...">
+          <input list="gm-list" id="gmName" class="select-input" placeholder="Choisissez...">
           <datalist id="gm-list">
             <option value="Aix-la-Chapelle">
             <option value="Alcatraz">
@@ -416,23 +373,21 @@
         </div>
       </div>
 
-      <!-- 2. Coût total du niveau (en deuxième) -->
       <div class="form-group">
         <label for="ownerCost">Coût total du niveau</label>
         <div class="input-counter">
-          <button onclick="changeVal('ownerCost', -1)">-</button>
-          <input type="number" id="ownerCost" value="0" min="0" oninput="calculateOwner()">
-          <button onclick="changeVal('ownerCost', 1)">+</button>
+          <button id="btn-ownerCost-minus">-</button>
+          <input type="number" id="ownerCost" value="0" min="0">
+          <button id="btn-ownerCost-plus">+</button>
         </div>
       </div>
 
-      <!-- 3. Taux du fil -->
       <div class="form-group">
         <label for="rate">Taux du fil (ex. 1.9)</label>
         <div class="input-counter">
-          <button onclick="changeVal('rate', -0.01, true)">-</button>
-          <input type="number" id="rate" value="1.9" step="0.01" min="1" oninput="calculateOwner()">
-          <button onclick="changeVal('rate', 0.01, true)">+</button>
+          <button id="btn-rate-minus">-</button>
+          <input type="number" id="rate" value="1.9" step="0.01" min="1">
+          <button id="btn-rate-plus">+</button>
         </div>
       </div>
 
@@ -440,34 +395,34 @@
         <thead>
           <tr>
             <th>Place</th>
-            <th>Gain de base (PF)</th>
-            <th>Mise Investisseur</th>
+            <th>Gain base (PF)</th>
+            <th>Mise Invest.</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <td><strong>P1</strong></td>
-            <td><input type="number" id="p1Base" value="0" min="0" oninput="calculateOwner()"></td>
+            <td><input type="number" id="p1Base" value="0" min="0"></td>
             <td><span id="p1Boost" class="highlight">0</span> PF</td>
           </tr>
           <tr>
             <td><strong>P2</strong></td>
-            <td><input type="number" id="p2Base" value="0" min="0" oninput="calculateOwner()"></td>
+            <td><input type="number" id="p2Base" value="0" min="0"></td>
             <td><span id="p2Boost" class="highlight">0</span> PF</td>
           </tr>
           <tr>
             <td><strong>P3</strong></td>
-            <td><input type="number" id="p3Base" value="0" min="0" oninput="calculateOwner()"></td>
+            <td><input type="number" id="p3Base" value="0" min="0"></td>
             <td><span id="p3Boost" class="highlight">0</span> PF</td>
           </tr>
           <tr>
             <td><strong>P4</strong></td>
-            <td><input type="number" id="p4Base" value="0" min="0" oninput="calculateOwner()"></td>
+            <td><input type="number" id="p4Base" value="0" min="0"></td>
             <td><span id="p4Boost" class="highlight">0</span> PF</td>
           </tr>
           <tr>
             <td><strong>P5</strong></td>
-            <td><input type="number" id="p5Base" value="0" min="0" oninput="calculateOwner()"></td>
+            <td><input type="number" id="p5Base" value="0" min="0"></td>
             <td><span id="p5Boost" class="highlight">0</span> PF</td>
           </tr>
         </tbody>
@@ -476,178 +431,254 @@
 
     <div class="card result-card">
       <h3>Résultat Sécurisation</h3>
-      <div class="result-row primary-highlight">
-        <span>Montant total à poser par le propriétaire :</span>
+      <div class="result-row primary-highlight" id="rowOwnerSecure" style="cursor: pointer;" title="Cliquer pour copier le montant">
+        <span>A poser par le proprio :</span>
         <span class="result-value" id="resOwnerSecure">0 PF</span>
       </div>
       <div class="result-row">
-        <span>Total investi par les 5 places :</span>
+        <span>Total investi (5 places) :</span>
         <span class="result-value" id="resTotalInvestors">0 PF</span>
       </div>
       
-      <button class="btn-copy" onclick="copyGuildThread()">Copier l'annonce pour la guilde</button>
+      <button class="btn-copy" id="copy-guild">Copier l'annonce pour la guilde</button>
       
       <p class="info-text">
         Pose ce montant sur ton GM avant d'annoncer les places pour éviter tout risque de snipe sur la P1 et P2.
-      </p>
-      <p class="info-text">
-        💡 <strong>Astuce :</strong> Si tu laisses le taux à 1.9, les contributeurs possédant une Arche de niveau supérieur à 80 réaliseront du bénéfice net sur leur pose, ce qui rendra ton annonce beaucoup plus attractive sur les fils de guilde !
       </p>
     </div>
   </div>
 </div>
 
 <script>
-  function switchTab(tabId) {
-    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-    document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-    
-    if (tabId === 'tab-investor') {
-      document.querySelectorAll('.tab-btn')[0].classList.add('active');
-    } else {
-      document.querySelectorAll('.tab-btn')[1].classList.add('active');
+document.addEventListener('DOMContentLoaded', () => {
+  // Navigation onglets
+  document.getElementById('btn-tab-investor').addEventListener('click', () => switchTab('tab-investor'));
+  document.getElementById('btn-tab-owner').addEventListener('click', () => switchTab('tab-owner'));
+
+  // Ouvrir dans un nouvel onglet navigateur
+  document.getElementById('btn-open-tab').addEventListener('click', () => {
+    window.open(window.location.href, '_blank');
+  });
+
+  // Copie rapide du montant à bloquer (Onglet Investisseur)
+  document.getElementById('rowToSecure').addEventListener('click', () => {
+    const val = document.getElementById('resToSecure').textContent;
+    if (val && parseInt(val) > 0) {
+      navigator.clipboard.writeText(val).then(() => {
+        const el = document.getElementById('resToSecure');
+        const originalText = el.textContent;
+        el.textContent = 'Copié !';
+        setTimeout(() => { el.textContent = originalText; }, 800);
+      });
     }
-    document.getElementById(tabId).classList.add('active');
-  }
+  });
 
-  window.onload = function() {
-    const savedBonus = localStorage.getItem('foe_arche_bonus');
-    if (savedBonus !== null) {
-      document.getElementById('archeBonus').value = savedBonus;
+  // Copie rapide du montant à poser par le propriétaire (Onglet Propriétaire)
+  document.getElementById('rowOwnerSecure').addEventListener('click', () => {
+    const textVal = document.getElementById('resOwnerSecure').textContent;
+    const numVal = parseInt(textVal.replace(/[^0-9]/g, ''));
+    if (numVal > 0) {
+      navigator.clipboard.writeText(numVal.toString()).then(() => {
+        const el = document.getElementById('resOwnerSecure');
+        const originalText = el.textContent;
+        el.textContent = 'Copié !';
+        setTimeout(() => { el.textContent = originalText; }, 800);
+      });
     }
-    calculateInvestor();
-    calculateOwner();
-  };
+  });
 
-  function saveArche() {
-    const bonus = document.getElementById('archeBonus').value;
-    localStorage.setItem('foe_arche_bonus', bonus);
-  }
+  // Reset
+  document.getElementById('reset-investor').addEventListener('click', resetInvestorForm);
+  document.getElementById('reset-owner').addEventListener('click', resetOwnerForm);
 
-  function changeVal(id, step, isFloat = false) {
-    const input = document.getElementById(id);
-    let val = isFloat ? parseFloat(input.value) || 0 : parseInt(input.value) || 0;
-    val += step;
-    if (val < 0) val = 0;
-    input.value = isFloat ? (id === 'rate' ? val.toFixed(2) : val.toFixed(1)) : val;
-    
-    if (id === 'archeBonus') saveArche();
-    
-    if (['cost', 'currentDeposits', 'myDeposits', 'targetPlayer', 'archeBonus', 'baseReward'].includes(id)) {
+  // Copier guilde
+  document.getElementById('copy-guild').addEventListener('click', copyGuildThread);
+
+  // Boutons + et -
+  setupCounterButtons();
+
+  // Inputs JS
+  const investorInputs = ['cost', 'currentDeposits', 'myDeposits', 'targetPlayer', 'archeBonus', 'baseReward'];
+  investorInputs.forEach(id => {
+    document.getElementById(id).addEventListener('input', () => {
+      if (id === 'archeBonus') saveArche();
       calculateInvestor();
-    } else {
-      calculateOwner();
-    }
+    });
+  });
+
+  const ownerInputs = ['gmName', 'ownerCost', 'rate', 'p1Base', 'p2Base', 'p3Base', 'p4Base', 'p5Base'];
+  ownerInputs.forEach(id => {
+    document.getElementById(id).addEventListener('input', calculateOwner);
+  });
+
+  // Init Arche depuis storage local
+  const savedBonus = localStorage.getItem('foe_arche_bonus');
+  if (savedBonus !== null) {
+    document.getElementById('archeBonus').value = savedBonus;
   }
 
-  function resetInvestorForm() {
-    document.getElementById('cost').value = 0;
-    document.getElementById('currentDeposits').value = 0;
-    document.getElementById('myDeposits').value = 0;
-    document.getElementById('targetPlayer').value = 0;
-    document.getElementById('baseReward').value = 0;
+  calculateInvestor();
+  calculateOwner();
+});
+
+function switchTab(tabId) {
+  document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+
+  if (tabId === 'tab-investor') {
+    document.getElementById('btn-tab-investor').classList.add('active');
+  } else {
+    document.getElementById('btn-tab-owner').classList.add('active');
+  }
+  document.getElementById(tabId).classList.add('active');
+}
+
+function saveArche() {
+  const bonus = document.getElementById('archeBonus').value;
+  localStorage.setItem('foe_arche_bonus', bonus);
+}
+
+function setupCounterButtons() {
+  const counters = [
+    { id: 'cost', step: 1, isFloat: false, isInvestor: true },
+    { id: 'currentDeposits', step: 1, isFloat: false, isInvestor: true },
+    { id: 'myDeposits', step: 1, isFloat: false, isInvestor: true },
+    { id: 'targetPlayer', step: 1, isFloat: false, isInvestor: true },
+    { id: 'archeBonus', step: 0.1, isFloat: true, isInvestor: true },
+    { id: 'baseReward', step: 1, isFloat: false, isInvestor: true },
+    { id: 'ownerCost', step: 1, isFloat: false, isInvestor: false },
+    { id: 'rate', step: 0.01, isFloat: true, isInvestor: false }
+  ];
+
+  counters.forEach(c => {
+    document.getElementById(`btn-${c.id}-minus`).addEventListener('click', () => changeVal(c.id, -c.step, c.isFloat, c.isInvestor));
+    document.getElementById(`btn-${c.id}-plus`).addEventListener('click', () => changeVal(c.id, c.step, c.isFloat, c.isInvestor));
+  });
+}
+
+function changeVal(id, step, isFloat, isInvestor) {
+  const input = document.getElementById(id);
+  let val = isFloat ? parseFloat(input.value) || 0 : parseInt(input.value) || 0;
+  val += step;
+  if (val < 0) val = 0;
+  input.value = isFloat ? (id === 'rate' ? val.toFixed(2) : val.toFixed(1)) : val;
+
+  if (id === 'archeBonus') saveArche();
+
+  if (isInvestor) {
     calculateInvestor();
-  }
-
-  function resetOwnerForm() {
-    document.getElementById('ownerCost').value = 0;
-    document.getElementById('gmName').value = '';
-    document.getElementById('rate').value = 1.9;
-    for (let i = 1; i <= 5; i++) {
-      document.getElementById(`p${i}Base`).value = 0;
-    }
+  } else {
     calculateOwner();
   }
+}
 
-  function calculateInvestor() {
-    const cost = parseFloat(document.getElementById('cost').value) || 0;
-    const currentDeposits = parseFloat(document.getElementById('currentDeposits').value) || 0;
-    const myDeposits = parseFloat(document.getElementById('myDeposits').value) || 0;
-    const targetPlayer = parseFloat(document.getElementById('targetPlayer').value) || 0;
-    const archeBonus = parseFloat(document.getElementById('archeBonus').value) || 0;
-    const baseReward = parseFloat(document.getElementById('baseReward').value) || 0;
+function resetInvestorForm() {
+  document.getElementById('cost').value = 0;
+  document.getElementById('currentDeposits').value = 0;
+  document.getElementById('myDeposits').value = 0;
+  document.getElementById('targetPlayer').value = 0;
+  document.getElementById('baseReward').value = 0;
+  calculateInvestor();
+}
 
-    const remaining = Math.max(0, cost - currentDeposits);
-    let toSecure = Math.ceil((cost - currentDeposits + myDeposits + targetPlayer) / 2) - myDeposits;
-    
-    if (targetPlayer > 0 && (myDeposits + toSecure) <= targetPlayer) {
-      toSecure = targetPlayer + 1 - myDeposits;
-    }
-    if (toSecure < 0) toSecure = 0;
+function resetOwnerForm() {
+  document.getElementById('ownerCost').value = 0;
+  document.getElementById('gmName').value = '';
+  document.getElementById('rate').value = 1.9;
+  for (let i = 1; i <= 5; i++) {
+    document.getElementById(`p${i}Base`).value = 0;
+  }
+  calculateOwner();
+}
 
-    const rewardWithArche = Math.round(baseReward * (1 + archeBonus / 100));
-    const totalInvested = myDeposits + toSecure;
-    const balance = rewardWithArche - totalInvested;
+function calculateInvestor() {
+  const cost = parseFloat(document.getElementById('cost').value) || 0;
+  const currentDeposits = parseFloat(document.getElementById('currentDeposits').value) || 0;
+  const myDeposits = parseFloat(document.getElementById('myDeposits').value) || 0;
+  const targetPlayer = parseFloat(document.getElementById('targetPlayer').value) || 0;
+  const archeBonus = parseFloat(document.getElementById('archeBonus').value) || 0;
+  const baseReward = parseFloat(document.getElementById('baseReward').value) || 0;
 
-    document.getElementById('resRemaining').textContent = remaining;
-    document.getElementById('resToSecure').textContent = toSecure;
-    document.getElementById('resReward').textContent = rewardWithArche;
+  const remaining = Math.max(0, cost - currentDeposits);
+  let toSecure = Math.ceil((cost - currentDeposits + myDeposits + targetPlayer) / 2) - myDeposits;
 
-    const balanceEl = document.getElementById('resBalance');
-    const balanceRow = document.getElementById('balanceRow');
-    
-    balanceRow.className = "result-row balance-highlight";
+  if (targetPlayer > 0 && (myDeposits + toSecure) <= targetPlayer) {
+    toSecure = targetPlayer + 1 - myDeposits;
+  }
+  if (toSecure < 0) toSecure = 0;
 
-    if (balance > 0) {
-      balanceEl.textContent = `Gain : +${balance} PF`;
-      balanceRow.classList.add("balance-profit");
-    } else if (balance < 0) {
-      balanceEl.textContent = `Perte : ${balance} PF`;
-      balanceRow.classList.add("balance-loss");
-    } else {
-      balanceEl.textContent = `0 PF`;
-      balanceRow.classList.add("balance-zero");
+  const rewardWithArche = Math.round(baseReward * (1 + archeBonus / 100));
+  const totalInvested = myDeposits + toSecure;
+  const balance = rewardWithArche - totalInvested;
+
+  document.getElementById('resRemaining').textContent = remaining;
+  document.getElementById('resToSecure').textContent = toSecure;
+  document.getElementById('resReward').textContent = rewardWithArche;
+
+  const balanceEl = document.getElementById('resBalance');
+  const balanceRow = document.getElementById('balanceRow');
+
+  balanceRow.className = "result-row balance-highlight";
+
+  if (balance > 0) {
+    balanceEl.textContent = `Gain : +${balance} PF`;
+    balanceRow.classList.add("balance-profit");
+  } else if (balance < 0) {
+    balanceEl.textContent = `Perte : ${balance} PF`;
+    balanceRow.classList.add("balance-loss");
+  } else {
+    balanceEl.textContent = `0 PF`;
+    balanceRow.classList.add("balance-zero");
+  }
+}
+
+function calculateOwner() {
+  const ownerCost = parseFloat(document.getElementById('ownerCost').value) || 0;
+  const rate = parseFloat(document.getElementById('rate').value) || 1.9;
+
+  let totalInvestors = 0;
+  let p1Boost = 0;
+  let p2Boost = 0;
+
+  for (let i = 1; i <= 5; i++) {
+    const base = parseFloat(document.getElementById(`p${i}Base`).value) || 0;
+    const boost = Math.round(base * rate);
+    document.getElementById(`p${i}Boost`).textContent = boost;
+    totalInvestors += boost;
+
+    if (i === 1) p1Boost = boost;
+    if (i === 2) p2Boost = boost;
+  }
+
+  let ownerSecure = ownerCost - (p1Boost + (p2Boost * 2));
+  if (ownerSecure < 0) ownerSecure = 0;
+
+  document.getElementById('resOwnerSecure').textContent = `${ownerSecure} PF`;
+  document.getElementById('resTotalInvestors').textContent = `${totalInvestors} PF`;
+}
+
+function copyGuildThread() {
+  const gmName = document.getElementById('gmName').value.trim();
+  let text = gmName ? `${gmName} ` : '';
+  let parts = [];
+
+  for (let i = 1; i <= 5; i++) {
+    const boost = document.getElementById(`p${i}Boost`).textContent;
+    if (parseInt(boost) > 0) {
+      parts.push(`P${i}(${boost})`);
     }
   }
 
-  function calculateOwner() {
-    const ownerCost = parseFloat(document.getElementById('ownerCost').value) || 0;
-    const rate = parseFloat(document.getElementById('rate').value) || 1.9;
-
-    let totalInvestors = 0;
-    let p1Boost = 0;
-    let p2Boost = 0;
-
-    for (let i = 1; i <= 5; i++) {
-      const base = parseFloat(document.getElementById(`p${i}Base`).value) || 0;
-      const boost = Math.round(base * rate);
-      document.getElementById(`p${i}Boost`).textContent = boost;
-      totalInvestors += boost;
-
-      if (i === 1) p1Boost = boost;
-      if (i === 2) p2Boost = boost;
-    }
-
-    let ownerSecure = ownerCost - (p1Boost + (p2Boost * 2));
-    if (ownerSecure < 0) ownerSecure = 0;
-
-    document.getElementById('resOwnerSecure').textContent = `${ownerSecure} PF`;
-    document.getElementById('resTotalInvestors').textContent = `${totalInvestors} PF`;
+  if (parts.length === 0) {
+    alert("Indique au moins une récompense de place avant de copier !");
+    return;
   }
 
-  function copyGuildThread() {
-    const gmName = document.getElementById('gmName').value.trim();
-    let text = gmName ? `${gmName} ` : '';
-    let parts = [];
-
-    for (let i = 1; i <= 5; i++) {
-      const boost = document.getElementById(`p${i}Boost`).textContent;
-      if (parseInt(boost) > 0) {
-        parts.push(`P${i}(${boost})`);
-      }
-    }
-
-    if (parts.length === 0) {
-      alert("Indique au moins une récompense de place avant de copier !");
-      return;
-    }
-
-    text += parts.join(' ');
-    navigator.clipboard.writeText(text).then(() => {
-      alert(`Texte copié dans le presse-papier :\n"${text}"`);
-    });
-  }
+  text += parts.join(' ');
+  navigator.clipboard.writeText(text).then(() => {
+    alert(`Texte copié :\n"${text}"`);
+  });
+}
 </script>
-
 </body>
 </html>
